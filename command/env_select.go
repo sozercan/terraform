@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/mitchellh/cli"
@@ -38,7 +39,7 @@ func (c *EnvSelectCommand) Run(args []string) int {
 		return 1
 	}
 
-	name := args[0]
+	name := url.PathEscape(args[0])
 
 	states, err := b.States()
 	if err != nil {

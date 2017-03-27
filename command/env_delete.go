@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/hashicorp/terraform/state"
@@ -30,7 +31,7 @@ func (c *EnvDeleteCommand) Run(args []string) int {
 		return cli.RunResultHelp
 	}
 
-	delEnv := args[0]
+	delEnv := url.PathEscape(args[0])
 
 	configPath, err := ModulePath(args[1:])
 	if err != nil {

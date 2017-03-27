@@ -2,6 +2,7 @@ package command
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"strings"
 
@@ -33,7 +34,7 @@ func (c *EnvNewCommand) Run(args []string) int {
 		return cli.RunResultHelp
 	}
 
-	newEnv := args[0]
+	newEnv := url.PathEscape(args[0])
 
 	configPath, err := ModulePath(args[1:])
 	if err != nil {

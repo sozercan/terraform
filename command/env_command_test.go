@@ -76,7 +76,8 @@ func TestEnv_createAndList(t *testing.T) {
 
 	newCmd := &EnvNewCommand{}
 
-	envs := []string{"test_a", "test_b", "test_c"}
+	// include some path and unicode characters that shouldn't be allowed
+	envs := []string{"test_a", "test_b/../../../*", "好_c", "test_d"}
 
 	// create multiple envs
 	for _, env := range envs {
@@ -96,7 +97,9 @@ func TestEnv_createAndList(t *testing.T) {
 	}
 
 	actual := strings.TrimSpace(ui.OutputWriter.String())
-	expected := "default\n  test_a\n  test_b\n* test_c"
+
+	// all env names should be escaped
+	expected := "default\n  %E5%A5%BD_c\n  test_a\n  test_b%2F..%2F..%2F..%2F%2A\n* test_d"
 
 	if actual != expected {
 		t.Fatalf("\nexpcted: %q\nactual:  %q", expected, actual)
